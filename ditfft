@@ -1,0 +1,32 @@
+clear all;
+close all;
+clc;
+x=[0 1 2 0]
+Na=length(x);
+d=nextpow2(Na)
+x=[x zeros(1,(2^d)-Na)]
+x1=x;
+N=length(x);
+n1= 0:1:N-1
+P=log2(N)
+H=1;
+x=bitrevorder(x);
+for s=1:P
+    for k=0:(2^s):(N-1)
+        for n=0:(H-1)
+            m=n+k+1
+            kn=(2^(P-s))*n
+            w=exp(-i*2*pi*kn/N)
+            a=x(m)+x(m+H)*w
+            b=x(m)-x(m+H)*w
+            x(m)=a;
+            x(m+H)=b;
+        end
+    end
+    H=2*H;
+end
+xk=x;
+subplot(2,1,1)
+stem(x)
+xlabel('frequency')
+ylabel('x(k')
